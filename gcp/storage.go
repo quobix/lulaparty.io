@@ -2,12 +2,12 @@ package gcp
 
 import (
         storage "google.golang.org/api/storage/v1"
-        "lulaparty.io/model"
+        "github.com/quobix/lulaparty.io/model"
 
         "fmt"
         "os"
         "path"
-        "lulaparty.io/util"
+        "github.com/quobix/lulaparty.io/util"
 )
 
 const (

@@ -4,8 +4,8 @@ import (
         "testing"
         . "github.com/smartystreets/goconvey/convey"
 
-        "lulaparty.io/model"
-        "lulaparty.io/util"
+        "github.com/quobix/lulaparty.io/model"
+        "github.com/quobix/lulaparty.io/util"
         "fmt"
         "os"
         "google.golang.org/api/storage/v1"

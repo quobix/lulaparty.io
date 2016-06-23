@@ -4,8 +4,8 @@ import (
         "time"
         "github.com/dgrijalva/jwt-go"
         "fmt"
-        "lulaparty.io/model"
-        "lulaparty.io/util"
+        "github.com/quobix/lulaparty.io/model"
+        "github.com/quobix/lulaparty.io/util"
 )
 
 const (

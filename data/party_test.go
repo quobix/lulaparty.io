@@ -3,10 +3,10 @@ package data
 import (
         "testing"
         . "github.com/smartystreets/goconvey/convey"
-        "lulaparty.io/model"
+        "github.com/quobix/lulaparty.io/model"
         "gopkg.in/mgo.v2/bson"
         "time"
-        "lulaparty.io/util"
+        "github.com/quobix/lulaparty.io/util"
         "github.com/shopspring/decimal"
 )
 

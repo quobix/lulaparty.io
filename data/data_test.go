@@ -7,7 +7,7 @@ import (
         . "github.com/smartystreets/goconvey/convey"
         "gopkg.in/mgo.v2"
         "fmt"
-        "lulaparty.io/model"
+        "github.com/quobix/lulaparty.io/model"
         "gopkg.in/mgo.v2/bson"
 )
 

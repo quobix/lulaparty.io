@@ -3,7 +3,7 @@ package data
 import (
         "gopkg.in/mgo.v2"
         "strconv"
-        "lulaparty.io/model"
+        "github.com/quobix/lulaparty.io/model"
         "fmt"
         "gopkg.in/mgo.v2/bson"
         "os"

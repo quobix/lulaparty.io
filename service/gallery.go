@@ -1,12 +1,12 @@
 package service
 
 import (
-        "lulaparty.io/model"
+        "github.com/quobix/lulaparty.io/model"
         "os"
-        "lulaparty.io/gcp"
+        "github.com/quobix/lulaparty.io/gcp"
         "fmt"
-        "lulaparty.io/data"
-        "lulaparty.io/util"
+        "github.com/quobix/lulaparty.io/data"
+        "github.com/quobix/lulaparty.io/util"
 )
 
 func PersistGalleryItemToStorage(g *model.GalleryItem, f *os.File, ac *model.AppConfig) (*model.GalleryItem, error) {

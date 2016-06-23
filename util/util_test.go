@@ -5,7 +5,7 @@ import (
         . "github.com/smartystreets/goconvey/convey"
         "strings"
         "os"
-        "lulaparty.io/model"
+        "github.com/quobix/lulaparty.io/model"
         "gopkg.in/mgo.v2/bson"
         "path"
 

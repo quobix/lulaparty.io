@@ -3,13 +3,13 @@ package service
 import (
         "testing"
         . "github.com/smartystreets/goconvey/convey"
-        "lulaparty.io/model"
+        "github.com/quobix/lulaparty.io/model"
 
-        "lulaparty.io/data"
+        "github.com/quobix/lulaparty.io/data"
         "fmt"
         "os"
         "gopkg.in/mgo.v2/bson"
-        "lulaparty.io/gcp"
+        "github.com/quobix/lulaparty.io/gcp"
         "net/http"
         "google.golang.org/api/storage/v1"
 )

@@ -5,7 +5,7 @@ import (
         "fmt"
         "regexp"
         "strings"
-        "lulaparty.io/model"
+        "github.com/quobix/lulaparty.io/model"
         "os"
         "path"
         "gopkg.in/mgo.v2/bson"

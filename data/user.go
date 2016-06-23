@@ -1,7 +1,7 @@
 package data
 
 import (
-        "lulaparty.io/model"
+        "github.com/quobix/lulaparty.io/model"
         "gopkg.in/mgo.v2/bson"
         "time"
         "fmt"

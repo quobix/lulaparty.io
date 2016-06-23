@@ -4,7 +4,7 @@ import (
         "testing"
         . "github.com/smartystreets/goconvey/convey"
         "gopkg.in/mgo.v2/bson"
-        "lulaparty.io/model"
+        "github.com/quobix/lulaparty.io/model"
 )
 
 func TestCreateCustomerProfile(t *testing.T) {

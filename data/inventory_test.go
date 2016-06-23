@@ -3,7 +3,7 @@ package data
 import (
         "testing"
         . "github.com/smartystreets/goconvey/convey"
-        "lulaparty.io/model"
+        "github.com/quobix/lulaparty.io/model"
 
         "gopkg.in/mgo.v2/bson"
         "github.com/shopspring/decimal"

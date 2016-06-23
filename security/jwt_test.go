@@ -4,11 +4,11 @@ import (
         "testing"
         . "github.com/smartystreets/goconvey/convey"
 
-        "lulaparty.io/model"
-        "lulaparty.io/data"
+        "github.com/quobix/lulaparty.io/model"
+        "github.com/quobix/lulaparty.io/data"
         "github.com/dgrijalva/jwt-go"
 
-        "lulaparty.io/util"
+        "github.com/quobix/lulaparty.io/util"
 )
 
 var m   *Manager

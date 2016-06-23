@@ -1,10 +1,10 @@
 package data
 
 import (
-        "lulaparty.io/model"
+        "github.com/quobix/lulaparty.io/model"
         "gopkg.in/mgo.v2/bson"
         "fmt"
-        "lulaparty.io/util"
+        "github.com/quobix/lulaparty.io/util"
 )
 
 func CreateParty(p *model.Party, ac *model.AppConfig) (*model.Party, error) {
