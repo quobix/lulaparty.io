@@ -140,7 +140,7 @@ func TestCreateUserSimple(t *testing.T) {
         Convey("Given that we have a user, we can persist a new user without the required profiles", t, func() {
 
 
-                u :=&model.User{}
+                u :=&model.User{ Id : uuid }
                 ret_user, err := CreateUserSimple(u, ac)
 
                 So(err, ShouldBeNil)
@@ -172,6 +172,27 @@ func TestGetUser(t *testing.T) {
 
 }
 
+
+func TestUpdateUser(t *testing.T) {
+
+        Convey("Given that we can find our users, lets verify we can update them", t, func() {
+
+                test_user.Id = uuid
+                test_user.Email = "pop@chop.com"
+                test_user.Cell  = "911-999-111"
+
+                ret_user, err := UpdateUser(test_user, ac)
+
+                So(err, ShouldBeNil)
+                So(ret_user, ShouldNotBeNil)
+                So(ret_user.Cell, ShouldEqual, test_user.Cell)
+                So(ret_user.Email, ShouldEqual,test_user.Email)
+
+
+        })
+
+}
+
 func TestGetUserByEmail(t *testing.T) {
 
         Convey("Given that we can find the user by an ID, lets verify we can search for an email also", t, func() {
@@ -189,23 +210,5 @@ func TestGetUserByEmail(t *testing.T) {
 
 }
 
-func TestUpdateUser(t *testing.T) {
-
-        Convey("Given that we can find our users, lets verify we can update them", t, func() {
-
-                test_user.Email = "pop@chop.com"
-                test_user.Cell  = "911-999-111"
-
-                ret_user, err := UpdateUser(test_user, ac)
-
-                So(err, ShouldBeNil)
-                So(ret_user, ShouldNotBeNil)
-                So(ret_user.Cell, ShouldEqual, test_user.Cell)
-                So(ret_user.Email, ShouldEqual,test_user.Email)
-
-
-        })
-
-}
 
 
