@@ -1,0 +1,10 @@
+## Customize the test machine
+machine:
+
+# Add some environment variables
+  environment:
+    LLP_TEST_DB: llptest
+    LLP_TEST_DB_HOST: ds023088.mlab.com
+    LLP_TEST_DB_PASS: testpass
+    LLP_TEST_DB_USER: testuser
+    LLP_TEST_DB_PORT: 23088
