@@ -1,7 +1,5 @@
-## Customize the test machine
 machine:
 
-# Add some environment variables
   environment:
     LLP_TEST_DB: llptest
     LLP_TEST_DB_HOST: ds023088.mlab.com
