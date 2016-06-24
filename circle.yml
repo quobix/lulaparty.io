@@ -9,9 +9,8 @@ machine:
     LLP_TEST_DB_USER: testuser
     LLP_TEST_DB_PORT: 23088
 
-  pre:
+  post:
     - echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/gcloud-service-key.json
-    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update
     - sudo pip install pyopenssl
     - sudo chmod 777 .bashrc.backup
     - sudo rm -rf /opt/google-cloud-sdk/
@@ -20,4 +19,4 @@ machine:
     - export CLOUDSDK_PYTHON_SITEPACKAGES=1
     - source ${HOME}/google-cloud-sdk/path.bash.inc
     - ${HOME}/google-cloud-sdk/bin/gcloud auth activate-service-account circleci@lulaparty-io-test.iam.gserviceaccount.com --key-file ${HOME}/lulaparty.io/lulu_serviceaccount.json
-    - sudo ${HOME}/google-cloud-sdk/bin/gcloud config set project $GCLOUD_PROJECT
+    - sudo ${HOME}/google-cloud-sdk/bin/gcloud config set project lulaparty-io-test
