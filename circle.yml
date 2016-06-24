@@ -26,4 +26,4 @@ test:
   pre:
     - go get -u github.com/jstemmer/go-junit-report
   override:
-    - go test -v -race ./... | $GOPATH/bin/go-junit-report > ${CIRCLE_TEST_REPORTS}/report.xml
+    - go test -v -race ./... | ../.go_workspace/bin/go-junit-report > ${CIRCLE_TEST_REPORTS}/report.xml
