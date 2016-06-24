@@ -10,13 +10,7 @@ machine:
     LLP_TEST_DB_PORT: 23088
 
   pre:
-    - sudo apt-get remove python-virtualenv python-openssl python3-openssl
-    - sudo apt-get update
-    - sudo apt-get install python-openssl python3-openssl
-    - export CLOUDSDK_CORE_DISABLE_PROMPTS=0
-    - sudo rm -rf /opt/google-cloud-sdk/
-    - export CLOUDSDK_CORE_DISABLE_PROMPTS=1 && sudo curl https://sdk.cloud.google.com | bash
     - echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/gcloud-service-key.json
-    - sudo ${HOME}/google-cloud-sdk/bin/gcloud --quiet components update
-    - sudo ${HOME}/google-cloud-sdk/bin/gcloud auth activate-service-account circleci --key-file ${HOME}/gcloud-service-key.json
+    - sudo gcloud --quiet components update
+    - gcloud auth activate-service-account circleci@lulaparty-io-test.iam.gserviceaccount.com --key-file ${HOME}/gcloud-service-key.json
     - sudo ${HOME}/google-cloud-sdk/bin/gcloud config set project $GCLOUD_PROJECT
