@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "lulaparty-io-test",
+  "private_key_id": "590550d9c79fc07acd5e9ee163f827c81d76cc81",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDsWV9zwbyJUWCk\nCTtEB1vZs1dKPqD0iMdQdycNn2AZVu/IYPYzYdy/pVU9RIlZyaz3efYTrK2+x5nW\nnl80LHkg2XYVZ+iw4R7kPezMEFOoE7YhOmXA1Cu+w7D4atcZggSbde3ZIolHfCTo\nXlBmK890L55ZFB5suOj+/MCEuPNMGRqJsF3pRFNtpIyGWfqLpRrqAmEEsdKa3Vcn\n57OwI2t1nDthID+dZX4tNT1mDVAiJN8/yVETDdsPGzA1G05U/TeuDIpcZRuRFpaV\nSdXcbZx4XHR1dIHtsLzNCizv81HX4Y9XNixv4BeoTqRDbJCn7MMeMa3rSZtZyPLX\nGjmmcefLAgMBAAECggEBAOACGSEat3oi4gi3Iy/oFZsxioM49s6uMNLIDACyVJ/P\nsTZnCBJNJ6+QoUiPg+rQ5hoswxmEqaxPfDRZKHzHxgpnca76LCYxSFklhCEpPFDq\nVc4KjlSEA+4rhbj9cl+fxoQd8s/BFwHk3QpMEcG0tkw1scxV8Dw1ycebgVCKBzbQ\nJe0zaZy6UKseQAS8zFQc2XChfu6glNm//6W5XCV5bevhxoOKynj4fCs0hbVw8iHV\nyYMddV4jUJZSo1jtsdQTcoqbj8xNjrLXGCS9y+bNl4MfzQ4PFLhSuDPlYiIg85RB\nQPP9nfDLFXhOsEv2VI2O8BH/mvnWMcA4GOmvve/ddMkCgYEA+cOoO3O/zs2E7EKm\nt7RtF0uszR1GCtxGScbSphzUntaiuWIbpCs3m23PtKL7SzEDDYay11c26AiWhPCV\nbqUldJHNdVtkBO/bpxXotY68a6T4osfFrj7ihe102vJyVXQrWK79n6X0UAOquXhN\ngjzYeMVt61ZmcQaFscR5PkZAHrUCgYEA8j/5V/29/1eWYytHFBm0TPCr8GmCsGdZ\nYNBRhtTaG9uF8DaPiPZrE02Qrm+NSJVCKqRwlFW4oSBx6Om9r8XHowEm6I83I/C0\nK5vTUaaH310SY0/4YdglNeb9ui5SQ086qnJNdDP21y/4reOWYGnrS+emga80skJf\nt0iGkL2XfH8CgYEAhoiahLObfKR9Vdms/cTlAihUAwQip1TxU2oSK0HaUVihvCOZ\nafuRb1peCBnGLEFROKb2jEHBJIkDssX4Z+ny2/BxcCZzIKmmckC94ZXp7j2lY+Eh\nnPLoh2VZjVoMtfTmKFXR7X2xtKvU+SRQ87ccjykhRSN7+KOfvhpriFzEywUCgYAE\nNsCrmypW6rse9n3CB8BvJjCXef5f+yw+1uDUK5evrF3kE87jXwX1y/+cSSx3+sCv\n5TRgIC2Z/+p7VrWJ/TK/zyFSIkufQGyh5ZADd5YdeIz9VULI0O20xlPbjTq5GQO4\nO0zFnLHKhHca7z6KZs1FAL6Quu97ulPX6FcO5X1hGQKBgEia7h+wv0VpdSeJEZFv\nkohC2E2tlrGqjpjmGeqtGBNcVwxXtqXJnL5dhm0JxzKRlWjCRNQPcBbn//etyHcc\n/sBhUnw7/HkvRQYdHupU9u10SoJr50z1miEyRgvBLIwtFUz6ZChAAmskywlQbvg5\nzzB8DWkQhRD4eG6PZ7I5JFXb\n-----END PRIVATE KEY-----\n",
+  "client_email": "circleci@lulaparty-io-test.iam.gserviceaccount.com",
+  "client_id": "108446129138391322294",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/circleci%40lulaparty-io-test.iam.gserviceaccount.com"
+}

@@ -14,7 +14,9 @@ machine:
     - sudo apt-get update
     - sudo apt-get install python-openssl python3-openssl
     - export CLOUDSDK_CORE_DISABLE_PROMPTS=0
+    - sudo rm -rf /opt/google-cloud-sdk/
+    - export CLOUDSDK_CORE_DISABLE_PROMPTS=1 && curl https://sdk.cloud.google.com | bash
     - echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/gcloud-service-key.json
-    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update
-    - sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account circleci --key-file ${HOME}/gcloud-service-key.json
-    - sudo /opt/google-cloud-sdk/bin/gcloud config set project $GCLOUD_PROJECT
+    - sudo ${HOME}/google-cloud-sdk/bin/gcloud --quiet components update
+    - sudo ${HOME}/google-cloud-sdk/bin/gcloud auth activate-service-account circleci --key-file ${HOME}/gcloud-service-key.json
+    - sudo ${HOME}/google-cloud-sdk/bin/gcloud config set project $GCLOUD_PROJECT
