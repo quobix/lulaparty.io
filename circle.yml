@@ -10,6 +10,7 @@ machine:
     LLP_TEST_DB_PORT: 23088
 
   pre:
+    - pip install pyopenssl
     - echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/gcloud-service-key.json
     - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update
     - sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account circleci --key-file ${HOME}/gcloud-service-key.json
