@@ -168,12 +168,15 @@ func TestGenerateURI(t *testing.T) {
 
                 Convey("The $LLP_TEST_DB_HOST env var should have been set", func() {
                         So(host, ShouldNotBeNil)
+                        So(len(host), ShouldBeGreaterThan, 2)
                 })
                 Convey("The $LLP_TEST_DB_PASS env var should have been set", func() {
                         So(pass, ShouldNotBeNil)
+                        So(len(pass), ShouldBeGreaterThan, 2)
                 })
                 Convey("The $LLP_TEST_DB_USER env var should have been set", func() {
                         So(user, ShouldNotBeNil)
+                        So(len(user), ShouldBeGreaterThan, 2)
                 })
                 Convey("The $LLP_TEST_DB_PORT env var should have been set and greater than 0", func() {
                         So(port, ShouldNotBeNil)
