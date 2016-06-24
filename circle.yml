@@ -11,7 +11,6 @@ machine:
 
   post:
     - echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/gcloud-service-key.json
-    - export GOOGLE_APPLICATION_CREDENTIALS=/home/ubuntu/gcloud-service-key.json
     - sudo pip install pyopenssl
     - sudo chmod 777 .bashrc.backup
     - sudo rm -rf /opt/google-cloud-sdk/
@@ -21,3 +20,4 @@ machine:
     - source ${HOME}/google-cloud-sdk/path.bash.inc
     - ${HOME}/google-cloud-sdk/bin/gcloud auth activate-service-account circleci@lulaparty-io-test.iam.gserviceaccount.com --key-file ${HOME}/gcloud-service-key.json
     - sudo ${HOME}/google-cloud-sdk/bin/gcloud config set project lulaparty-io-test
+    - export GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json
