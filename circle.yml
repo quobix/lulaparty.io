@@ -27,11 +27,11 @@ test:
     - go get -u github.com/jstemmer/go-junit-report
   override:
     - go test -v -race ./... | ../.go_workspace/bin/go-junit-report > ${CIRCLE_TEST_REPORTS}/report.xml:
-      parallel: true
-        files:
-          - data/*_test.go
-          - gcp/*_test.go
-          - model/*_test.go
-          - security/*_test.go
-          - service/*_test.go
-          - util/*_test.go
+  #    parallel: true:
+  #      files:
+  #        - data/*_test.go
+  #        - gcp/*_test.go
+  #        - model/*_test.go
+  #        - security/*_test.go
+  #        - service/*_test.go
+  #        - util/*_test.go
