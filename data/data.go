@@ -1,170 +1,269 @@
 package data
 
 import (
-        "gopkg.in/mgo.v2"
-        "strconv"
-        "github.com/quobix/lulaparty.io/model"
-        "fmt"
-        "gopkg.in/mgo.v2/bson"
+        "testing"
         "os"
+        "strconv"
+        . "github.com/smartystreets/goconvey/convey"
+        "gopkg.in/mgo.v2"
+        "fmt"
+        "lulaparty.io/model"
+        "gopkg.in/mgo.v2/bson"
 )
 
-const (
-        NoEntityFound                   string = "No document with the Id [%s] could be found in collection [%s]: %s"
-        UnableToCreateEntity            string = "Unable to create document with Id [%s] in collection [%s]: %s"
-        UnableToRetrieveEntity          string = "Unable to updated document with iD [%s] in collection [%s]: %s"
-)
+var user        string
+var pass        string
+var host        string
+var db          string
+var port        int
+var sess        *mgo.Session
+var ac          *model.AppConfig
+var test_fbp    *model.FBProfile
+var test_addr   *model.Address
+var test_user   *model.User
+var hostess1    *model.HostessProfile
+var hostess2    *model.HostessProfile
+var hostess3    *model.HostessProfile
+var prov1       *model.ProviderProfile
+var prov2       *model.ProviderProfile
+var prov3       *model.ProviderProfile
+var cust1       *model.CustomerProfile
+var cust2       *model.CustomerProfile
+var cust3       *model.CustomerProfile
+var inv1        *model.Inventory
+var inv2        *model.Inventory
+var inv3        *model.Inventory
+var invItem1    *model.InventoryItem
+var invItem2    *model.InventoryItem
+var invItem3    *model.InventoryItem
+var invItem4    *model.InventoryItem
+var invItem5    *model.InventoryItem
+var g1          *model.Gallery
+var g2          *model.Gallery
+var g3          *model.Gallery
+var gItem1      *model.GalleryItem
+var gItem2      *model.GalleryItem
+var gItem3      *model.GalleryItem
+var p1,p2,p3    *model.Party
+var pi1,pi2,pi3 *model.PartyInventory
+var pinv1,pinv2 *model.PartyInvite
+var rew1        *model.Reward
+
+var uuid bson.ObjectId
 
 
-func CreateAppConfig(testMode bool) *model.AppConfig {
-
-        port, _ := strconv.Atoi(os.Getenv("LLP_TEST_DB_PORT"))
-        return &model.AppConfig{
-                DBName: os.Getenv("LLP_TEST_DB"),
-                DBUser: os.Getenv("LLP_TEST_DB_USER"),
-                DBPassword: os.Getenv("LLP_TEST_DB_PASS"),
-                DBPort: port,
-                DBHost: os.Getenv("LLP_TEST_DB_HOST"),
-                DBSession: ConnectDB(os.Getenv("LLP_TEST_DB_USER"), os.Getenv("LLP_TEST_DB_PASS"),
-                        os.Getenv("LLP_TEST_DB_HOST"), port,
-                                os.Getenv("LLP_TEST_DB")),
-                TestMode: testMode }
-
+func TestMain(m *testing.M) {
+        Setup()
+        fmt.Fprintf(os.Stderr, "starting data tests!\n")
+        result := m.Run()
+        fmt.Fprintf(os.Stderr, "finished data tests!\n")
+        //        Teardown()
+        os.Exit(result)
 }
 
-func GenerateURI(user string, pass string, host string, port int, db string) string {
-        return  "mongodb://" + user + ":" + pass + "@" + host + ":" + strconv.Itoa(port) + "/" + db
-}
+func Setup() {
+        host = os.Getenv("LLP_TEST_DB_HOST")
+        pass = os.Getenv("LLP_TEST_DB_PASS")
+        port, _ = strconv.Atoi(os.Getenv("LLP_TEST_DB_PORT"));
+        user = os.Getenv("LLP_TEST_DB_USER")
+        db = os.Getenv("LLP_TEST_DB")
 
-func ConnectDB(user string, pass string, host string, port int, db string) (*mgo.Session){
-        uri :=GenerateURI(user, pass, host, port, db)
-        session, err := mgo.Dial(uri)
-        if err != nil {
-                panic(err)
+        test_fbp = &model.FBProfile {
+                Id: bson.NewObjectId(),
+                Firstname: "John",
+                Lastname: "Appleseed",
+                Email:  "john@appleseed.com" }
+
+        test_addr = &model.Address {
+                Id: bson.NewObjectId(),
+                Street1: "1234 Happy Street",
+                Street2: "Poptown",
+                City:  "Smashville",
+                State: "CA",
+                Zip:    "90210",
         }
 
-        // Optional. Switch the session to a monotonic behavior.
-        session.SetMode(mgo.Monotonic, true)
-        return session
-}
-
-func GetDB(sess *mgo.Session, db string) (*mgo.Database) {
-        return sess.DB(db);
-}
-
-func GetCollection(sess *mgo.Session, db string, collection string) (*mgo.Collection) {
-        return GetDB(sess, db).C(collection)
-}
-
-func GenerateCollectionName(ac *model.AppConfig, collection string) string {
-        if(ac.TestMode) {
-                collection = collection + model.COLLECTION_TEST_POSTFIX
-        }
-        return collection
-}
-
-func CreateTestSession() (*model.AppConfig) {
-
-
-        ac := CreateAppConfig(true)
-
-        ac.DBSession.DB(ac.DBName).DropDatabase() // cleanup.
-        return ac
-
-}
-
-func createPersistedEntity(ac *model.AppConfig,
-        e model.PersistedEntity, collection string) (*model.PersistedEntity, error){
-        sess := ac.CopyDBSession()
-        defer sess.Close()
-        var t = GenerateCollectionName(ac, collection)
-
-        e.SetCreated()
-        c := sess.DB(ac.DBName).C(t)
-
-        // in case we don't have an id assigned yet.
-        if(e.GetId().Hex()=="") {
-                e.SetId(bson.NewObjectId())
+        test_user = &model.User {
+                Id: bson.NewObjectId(),
+                Cell: "(510) 321 3877",
+                Email: "john@appleseed.com",
         }
 
-        err := c.Insert(e)
-
-        if err != nil {
-                return nil, fmt.Errorf(model.GenerateMessage(model.ERROR_MODEL_CREATE_FAILED, e), err)
+        hostess1 = &model.HostessProfile {
+                Id: bson.NewObjectId(),
         }
-        return &e, nil
-}
-
-func deletePersistedEntity(ac *model.AppConfig, e model.PersistedEntity, collection string) error {
-        sess := ac.CopyDBSession()
-        defer sess.Close()
-        var t = GenerateCollectionName(ac, collection)
-
-
-        c := sess.DB(ac.DBName).C(t)
-        err := c.RemoveId(e.GetId())
-
-        if err != nil {
-                return fmt.Errorf(model.GenerateMessage(model.ERROR_MODEL_DELETE_FAILED, e), err)
+        hostess2 = &model.HostessProfile {
+                Id: bson.NewObjectId(),
         }
-        return nil
-}
-
-
-
-/* get the collection, but don't manage a session, let the handler deal with it. */
-func getEntityCollection(ac *model.AppConfig, sess *mgo.Session, collection string) *mgo.Collection {
-        var t = GenerateCollectionName(ac, collection)
-        return sess.DB(ac.DBName).C(t)
-}
-
-/**
-CRUD Operations helpers.
- */
-func updateHelper(e model.PersistedEntity, ac *model.AppConfig, coll string) (error) {
-        sess := ac.CopyDBSession()
-        defer sess.Close()
-        c := getEntityCollection(ac, sess, coll)
-
-        e.Update()
-        err := c.UpdateId(e.GetId(), &e)
-
-        if err != nil {
-                return fmt.Errorf(model.GenerateMessage(model.ERROR_MODEL_UPDATE_FAILED, e), err)
+        hostess3 = &model.HostessProfile {
+                Id: bson.NewObjectId(),
         }
-        return nil
-}
-
-func getHelper(id bson.ObjectId, e model.PersistedEntity, ac *model.AppConfig, coll string) (error) {
-        sess := ac.CopyDBSession()
-        defer sess.Close()
-        c := getEntityCollection(ac, sess, coll)
-
-        err := c.FindId(id).One(e)
-
-        if err != nil {
-                return fmt.Errorf(model.GenerateMessage(model.ERROR_MODEL_GET_FAILED, e), err)
+        prov1    = &model.ProviderProfile {
+                Id: bson.NewObjectId(),
         }
-        return nil
-
-}
-
-func queryHelperSingle(query bson.M, e model.PersistedEntity, ac *model.AppConfig, coll string) (error) {
-        sess := ac.CopyDBSession()
-        defer sess.Close()
-        c := getEntityCollection(ac, sess, coll)
-
-        err := c.Find(query).One(e)
-
-        if err != nil {
-                return fmt.Errorf(model.GenerateMessage(model.ERROR_MODEL_QUERY_FAILED, e), query, err)
+        prov2    = &model.ProviderProfile {
+                Id: bson.NewObjectId(),
         }
-        return nil
+        prov3    = &model.ProviderProfile {
+                Id: bson.NewObjectId(),
+        }
+        cust1    = &model.CustomerProfile {
+                Id: bson.NewObjectId(),
+        }
+        cust2    = &model.CustomerProfile {
+                Id: bson.NewObjectId(),
+        }
+        cust3    = &model.CustomerProfile {
+                Id: bson.NewObjectId(),
+        }
+        inv1    = &model.Inventory {
+                Id: bson.NewObjectId(),
+        }
+        inv2    = &model.Inventory {
+                Id: bson.NewObjectId(),
+        }
+        inv3    = &model.Inventory {
+                Id: bson.NewObjectId(),
+        }
+
+        invItem1    = &model.InventoryItem {
+                Id: bson.NewObjectId(),
+        }
+        invItem2    = &model.InventoryItem {
+                Id: bson.NewObjectId(),
+        }
+        invItem3    = &model.InventoryItem {
+                Id: bson.NewObjectId(),
+        }
+        invItem4    = &model.InventoryItem {
+                Id: bson.NewObjectId(),
+        }
+
+        g1    = &model.Gallery {
+                Id: bson.NewObjectId(),
+        }
+        g2    = &model.Gallery {
+                Id: bson.NewObjectId(),
+        }
+        g3    = &model.Gallery {
+                Id: bson.NewObjectId(),
+        }
+        gItem1    = &model.GalleryItem {
+                Id: bson.NewObjectId(),
+        }
+        gItem2    = &model.GalleryItem {
+                Id: bson.NewObjectId(),
+        }
+        gItem3    = &model.GalleryItem {
+                Id: bson.NewObjectId(),
+        }
 }
 
-func createSort(rev bool, s string) string {
-        if (rev) {
-                s = "-" + s// reverse sort
-        }
-        return s
+func Teardown() {
+        sess.Close()
 }
+
+func TestGenerateURI(t *testing.T) {
+        Convey("Given the ENV vars have been correctly set ", t, func() {
+
+                Convey("The $LLP_TEST_DB_HOST env var should have been set", func() {
+                        So(host, ShouldNotBeNil)
+                        So(len(host), ShouldBeGreaterThan, 1)
+                })
+                Convey("The $LLP_TEST_DB_PASS env var should have been set", func() {
+                        So(pass, ShouldNotBeNil)
+                        So(len(pass), ShouldBeGreaterThan, 1)
+                })
+                Convey("The $LLP_TEST_DB_USER env var should have been set", func() {
+                        So(user, ShouldNotBeNil)
+                        So(len(user), ShouldBeGreaterThan, 1)
+                })
+                Convey("The $LLP_TEST_DB_PORT env var should have been set and greater than 0", func() {
+                        So(port, ShouldNotBeNil)
+                        So(port, ShouldBeGreaterThan, 0)
+                })
+        })
+
+        Convey("Given that we know how to connect to the DB", t, func() {
+
+                var expected = "mongodb://" + user + ":" + pass + "@" + host + ":" + strconv.Itoa(port) + "/" + db
+                Convey("The system connection URI for mongoDB should validate", func() {
+                        So(expected, ShouldEqual, GenerateURI(user,pass,host,port,db))
+                })
+
+        })
+}
+
+func TestConnectDB(t *testing.T) {
+        Convey("Given we have a valid URI and database credentials, we should be able to connect to the DB", t, func() {
+                sess = ConnectDB(user,pass,host,port,db)
+                So(sess, ShouldNotBeNil)
+
+        })
+
+        Convey("Given we have a valid URI and invalid database credentials, a connection should panic", t, func() {
+
+                p := func() {
+                        c := ConnectDB("inavlid","invalid",host,port,db)
+                        defer c.Close()
+                }
+                So(p, ShouldPanic)
+        })
+}
+
+func TestGetDB(t *testing.T) {
+        d := GetDB(sess, db)
+        Convey("Given a valid connection to the DB, we should be able to extract it from a session", t, func() {
+                So(d, ShouldNotBeNil)
+        })
+
+}
+
+func TestGetCollection(t *testing.T) {
+
+        e := GetCollection(sess,db,"pop")
+
+        Convey("Given a valid DB reference, we should be able to extract the collections", t, func() {
+                So(e, ShouldNotBeNil)
+        })
+}
+
+func TestGenerateCollectionName(t *testing.T) {
+        Convey("Given we have a valid app config, flipping test mode on and off should generate correct names", t, func() {
+
+                ac = &model.AppConfig{
+                        DBName: db,
+                        DBUser: user,
+                        DBPassword: pass,
+                        DBPort: port,
+                        DBHost: host,
+                        DBSession: ConnectDB(user, pass, host, port, db),
+                        TestMode: true }
+
+                So(ac, ShouldNotBeNil)
+                So(GenerateCollectionName(ac, model.COLLECTION_FBPROFILE),
+                        ShouldEqual, model.COLLECTION_FBPROFILE + model.COLLECTION_TEST_POSTFIX)
+                So(GenerateCollectionName(ac, model.COLLECTION_USER),
+                        ShouldEqual, model.COLLECTION_USER + model.COLLECTION_TEST_POSTFIX)
+                So(GenerateCollectionName(ac, model.COLLECTION_ADDRESS),
+                        ShouldEqual, model.COLLECTION_ADDRESS + model.COLLECTION_TEST_POSTFIX)
+
+                So(GenerateCollectionName(ac, model.COLLECTION_ADDRESS),
+                        ShouldNotEqual, model.COLLECTION_USER + model.COLLECTION_TEST_POSTFIX)
+
+                ac.TestMode=false
+
+                So(GenerateCollectionName(ac, model.COLLECTION_FBPROFILE),
+                        ShouldEqual, model.COLLECTION_FBPROFILE)
+                So(GenerateCollectionName(ac, model.COLLECTION_USER),
+                        ShouldEqual, model.COLLECTION_USER)
+                So(GenerateCollectionName(ac, model.COLLECTION_ADDRESS),
+                        ShouldEqual, model.COLLECTION_ADDRESS)
+
+                ac.TestMode=true // reset for everyone else.
+
+        })
+
+}
+
+
