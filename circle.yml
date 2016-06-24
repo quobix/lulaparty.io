@@ -21,3 +21,9 @@ machine:
     - ${HOME}/google-cloud-sdk/bin/gcloud auth activate-service-account circleci@lulaparty-io-test.iam.gserviceaccount.com --key-file ${HOME}/gcloud-service-key.json
     - sudo ${HOME}/google-cloud-sdk/bin/gcloud config set project lulaparty-io-test
     - export GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcloud-service-key.json
+
+test:
+  pre:
+    - go get -u github.com/jstemmer/go-junit-report
+  override:
+    - go test -v -race ./... | $GOPATH/bin/go-junit-report > ${CIRCLE_TEST_REPORTS}/report.xml
