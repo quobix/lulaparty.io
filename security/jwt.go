@@ -6,6 +6,7 @@ import (
         "fmt"
         "github.com/quobix/lulaparty.io/model"
         "github.com/quobix/lulaparty.io/util"
+
 )
 
 const (
@@ -63,7 +64,7 @@ func (m *Manager) CreateToken(u *model.User) *jwt.Token {
         token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
                 "iat": time.Now().Unix(),
                 "lpu": u.Id,
-                "lph": util.GetMD5Hash(u.Id.String()+u.Email+u.Created.String()),
+                "lph": GenerateLLPHash(u),
                 "exp": time.Now().Add(d).Unix(),
         })
         return token
@@ -88,7 +89,7 @@ func (m *Manager) GetClaims(jwtString  string) (*LuluClaims, error) {
                         return nil, err
                 }
         }
-        return nil, fmt.Errorf("no token found in request")
+        return nil, fmt.Errorf("Unable to parse token: %s", err)
 }
 
 // getKey accepts an unverified JWT and returns the signing/verification key.
@@ -100,4 +101,7 @@ func (m *Manager) getKey(unverified *jwt.Token) (interface{}, error) {
                 return nil, jwt.ErrHashUnavailable
         }
         return m.key, nil
+}
+func GenerateLLPHash(u *model.User) string {
+      return util.GetMD5Hash(u.Id.String()+u.Email+u.Created.String()) // all valid tokens contain this hash
 }
