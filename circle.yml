@@ -1,12 +1,5 @@
 machine:
 
-  environment:
-    LLP_TEST_DB: llptest
-    LLP_TEST_DB_HOST: ds023088.mlab.com
-    LLP_TEST_DB_PASS: testpass
-    LLP_TEST_DB_USER: testuser
-    LLP_TEST_DB_PORT: 23088
-
   post:
     - echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/gcloud-service-key.json
     - sudo pip install pyopenssl

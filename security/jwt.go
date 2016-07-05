@@ -10,7 +10,6 @@ import (
 
 const (
         defaultTTL = 3600 * 24 * 7 // 1 week
-        JWTSECRET = "giantkingslugthing|chickie,maggie,fox"
 )
 
 // I have heavily modified this. Originally taken from github.com/dghubble/jwts

@@ -97,6 +97,7 @@ func TestPersistGalleryItemToStorage(t *testing.T) {
         })
 
         Convey("And given we can wire and persist, we should be able to verify the objects exist and are correctly wired", t, func () {
+
                 resp, err := http.Get(gcp.GenerateObjectURI(model.BUCKET_GALLERY, fuuid, ac))
 
                 So(err, ShouldBeNil)

@@ -18,8 +18,9 @@ var sto string
 
 func TestCreateNewManager(t *testing.T) {
         Convey("we should be able to create a new manager without error", t, func() {
+                ac := data.CreateTestSession()
 
-                m = CreateNewManager([]byte(JWTSECRET))
+                m = CreateNewManager([]byte(ac.JTWSecret))
                 So(m, ShouldNotBeNil)
         })
 }

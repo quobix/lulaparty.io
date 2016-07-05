@@ -49,6 +49,7 @@ type AppConfig struct {
         DBPort                          int             `json:"dbport"`
         DBSession                       *mgo.Session    `json:"-"`
         TestMode                        bool
+        JTWSecret                       string          `json:"-"`
 }
 
 func (c *AppConfig) CopyDBSession() (*mgo.Session) {
@@ -58,7 +59,6 @@ func (c *AppConfig) CopyDBSession() (*mgo.Session) {
         if(c.DBSession == nil) { return nil }
         return c.DBSession.Copy();
 }
-
 
 func getTime() (time.Time) {
         return time.Now();

@@ -28,7 +28,8 @@ func CreateAppConfig(testMode bool) *model.AppConfig {
                 DBSession: ConnectDB(os.Getenv("LLP_TEST_DB_USER"), os.Getenv("LLP_TEST_DB_PASS"),
                         os.Getenv("LLP_TEST_DB_HOST"), port,
                         os.Getenv("LLP_TEST_DB")),
-                TestMode: testMode }
+                TestMode: testMode,
+                JTWSecret: os.Getenv("LLP_JWTSECRET")}
 
 }
 

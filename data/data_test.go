@@ -15,6 +15,7 @@ var user        string
 var pass        string
 var host        string
 var db          string
+var jwtsec      string
 var port        int
 var sess        *mgo.Session
 var ac          *model.AppConfig
@@ -67,6 +68,7 @@ func Setup() {
         port, _ = strconv.Atoi(os.Getenv("LLP_TEST_DB_PORT"));
         user = os.Getenv("LLP_TEST_DB_USER")
         db = os.Getenv("LLP_TEST_DB")
+        jwtsec = os.Getenv("LLP_JWTSECRET")
 
         test_fbp = &model.FBProfile {
                 Id: bson.NewObjectId(),
@@ -182,6 +184,11 @@ func TestGenerateURI(t *testing.T) {
                         So(port, ShouldNotBeNil)
                         So(port, ShouldBeGreaterThan, 0)
                 })
+                Convey("The $LLP_JWTSECRET env var should have been set", func() {
+                        So(jwtsec, ShouldNotBeNil)
+                        So(len(jwtsec), ShouldBeGreaterThan, 0)
+                })
+
         })
 
         Convey("Given that we know how to connect to the DB", t, func() {
