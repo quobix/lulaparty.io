@@ -26,7 +26,7 @@ func PersistGalleryItemToStorage(g *model.GalleryItem, f *os.File, ac *model.App
         if(err!=nil) {
                 return nil, fmt.Errorf("unable to make item publicly readable %v", err)
         }
-        
+
 
         // update gallery
         gal, err := data.GetGallery(g.GalleryId, ac)

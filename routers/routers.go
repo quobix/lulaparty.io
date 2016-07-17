@@ -5,7 +5,7 @@ import (
 )
 
 func InitRoutes() *mux.Router {
-	router := mux.NewRouter()
+	router := mux.NewRouter().StrictSlash(true)
 	router = SetHelloRoutes(router)
 	router = SetAuthenticationRoutes(router)
 	return router
