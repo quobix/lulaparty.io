@@ -15,12 +15,6 @@ func PersistGalleryItemToStorage(g *model.GalleryItem, f *os.File, ac *model.App
                 return nil, fmt.Errorf("unable to create a storage service! %v", err)
         }
 
-        /* check if gallery item exists in storage */
-        ret_gi, err := data.GetGalleryItem(g.Id, ac)
-        if(err!=nil) {
-                return nil, fmt.Errorf("can't find gallery item in storage with id: %v", g.Id)
-        }
-
         uri := util.GenerateRawGalleryItemUUID(g.OwnerId, g.GalleryId, g.Id, f)
         _, err = gcp.UploadObjectToBucketUsingName(model.BUCKET_GALLERY, f, uri, service, ac)
         if(err!=nil) {
@@ -32,13 +26,7 @@ func PersistGalleryItemToStorage(g *model.GalleryItem, f *os.File, ac *model.App
         if(err!=nil) {
                 return nil, fmt.Errorf("unable to make item publicly readable %v", err)
         }
-
-        // update gallery item with persisted storage
-        g.FileUUID = uri
-        _, err = data.UpdateGalleryItem(g, ac);
-        if(err!=nil) {
-                return nil, fmt.Errorf("unable to update gallery item %v", err)
-        }
+        
 
         // update gallery
         gal, err := data.GetGallery(g.GalleryId, ac)
@@ -49,6 +37,19 @@ func PersistGalleryItemToStorage(g *model.GalleryItem, f *os.File, ac *model.App
         gal, err = data.AddItemToGallery(gal.Id, g, ac)
         if(err!=nil) {
                 return nil, fmt.Errorf("unable to update gallery with new item %v", err)
+        }
+
+        // update gallery item with persisted storage
+        g.FileUUID = uri
+        _, err = data.UpdateGalleryItem(g, ac);
+        if(err!=nil) {
+                return nil, fmt.Errorf("unable to update gallery item %v", err)
+        }
+
+        /* check if gallery item exists in storage */
+        ret_gi, err := data.GetGalleryItem(g.Id, ac)
+        if(err!=nil) {
+                return nil, fmt.Errorf("can't find gallery item in storage with id: %v", g.Id)
         }
 
         return ret_gi, nil;

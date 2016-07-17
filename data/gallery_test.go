@@ -16,8 +16,6 @@ func TestCreateGallery(t *testing.T) {
                 ac = CreateTestSession()
         }
 
-        //sess.DB(ac.DBName).DropDatabase()
-
         Convey("Given that we have gallery, we should be able to persist it", t, func() {
                 uuid = g1.Id
                 g := &model.Gallery {

@@ -12,6 +12,7 @@ import (
         "github.com/quobix/lulaparty.io/gcp"
         "net/http"
         "google.golang.org/api/storage/v1"
+        "time"
 )
 
 var ac          *model.AppConfig
@@ -39,7 +40,9 @@ func Setup() {
 
         ac = data.CreateTestSession()
         service, _ = gcp.CreateStorageService()
-        // forced db cleanup
+
+
+
 
 
 }
@@ -54,6 +57,11 @@ func TestPersistGalleryItemToStorage(t *testing.T) {
 
         Convey("Given we are able to store a gallery item, we should be able to persist an object and wire the references", t, func () {
 
+
+                _, err := gcp.CreateBucket(model.BUCKET_GALLERY, service, ac)
+
+                file, err := os.Open(asset1)
+
                 _g := &model.Gallery {
                         Id: bson.NewObjectId(),
                         OwnerId: bson.NewObjectId() }
@@ -63,25 +71,21 @@ func TestPersistGalleryItemToStorage(t *testing.T) {
                         GalleryId: _g.Id,
                         OwnerId: _g.OwnerId }
 
-                ret_g, err := data.CreateGallery(_g, ac)
-                So(err, ShouldBeNil)
-                So(ret_g, ShouldNotBeNil)
+                fmt.Fprintf(os.Stderr, "starting gallery persist\n")
 
-                ret_gi, err := data.CreateGalleryItem(_gi, ac)
-                So(err, ShouldBeNil)
-                So(ret_gi, ShouldNotBeNil)
+                gal, _ = data.CreateGallery(_g, ac)
+                galItem = _gi
 
-                _gal, gerr := data.GetGallery(_g.Id, ac)
-                So(gerr, ShouldBeNil)
-                So(_gal, ShouldNotBeNil)
+                galId = gal.Id
+                galItemId = galItem.Id
 
 
-                _, err = gcp.CreateBucket(model.BUCKET_GALLERY, service, ac)
+                ret_gi, err := PersistGalleryItemToStorage(galItem, file, ac)
 
-                file, err := os.Open(asset1)
-                ret_gi, err = PersistGalleryItemToStorage(_gi, file, ac)
                 So(err, ShouldBeNil)
                 So(ret_gi, ShouldNotBeNil)
+
+                time.Sleep(500 * time.Millisecond)
 
                 gi1, gierr := data.GetGalleryItem(ret_gi.Id, ac)
 
@@ -89,10 +93,8 @@ func TestPersistGalleryItemToStorage(t *testing.T) {
 
                 So(gierr, ShouldBeNil)
                 So(gi1, ShouldNotBeNil)
-                So(fuuid, ShouldEqual, _gi.FileUUID)
+                So(fuuid, ShouldEqual, galItem.FileUUID)
 
-                galId = _gal.Id
-                galItemId = gi1.Id
 
         })
 

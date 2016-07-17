@@ -34,7 +34,6 @@ func Setup() {
         ac = &model.AppConfig{ TestMode: true }
 
         bid = util.GenerateUUID()
-        service, _ = CreateStorageService()
 
 }
 
@@ -46,10 +45,10 @@ func Teardown() {
 func TestCreateStorageService(t *testing.T) {
 
         Convey("Given that we can configure a gcp client, we should be able to create a storage session.", t, func() {
-
-                service, err := CreateStorageService()
+                srv, err := CreateStorageService()
                 So(err, ShouldBeNil)
-                So(service, ShouldNotBeNil)
+                So(srv, ShouldNotBeNil)
+                service = srv
         })
 
 }

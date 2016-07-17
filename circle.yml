@@ -1,5 +1,4 @@
 machine:
-
   post:
     - echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/gcloud-service-key.json
     - sudo pip install pyopenssl
