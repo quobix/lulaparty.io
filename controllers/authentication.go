@@ -6,17 +6,56 @@ import (
 	"net/http"
 	"github.com/quobix/lulaparty.io/model"
 	"github.com/quobix/lulaparty.io/service"
+	"strconv"
+	"github.com/goinggo/tracelog"
+
+	"net/mail"
+
+
 )
 
-func Login(w http.ResponseWriter, r *http.Request) {
-	requestUser := new(model.User)
-	decoder := json.NewDecoder(r.Body)
-	decoder.Decode(&requestUser)
+func writeError(w http.ResponseWriter, msg string) {
+	w.WriteHeader(http.StatusForbidden)
+	json.NewEncoder(w).Encode(model.ServiceResponse{true,msg})
+}
 
-	responseStatus, token := service.Login(requestUser)
+
+
+func Authenticate(w http.ResponseWriter, r *http.Request) {
+	tracelog.Trace("controllers","Authenticate","Executing authentication controller")
+
+	var ter model.TokenExchangeRequest
+	if err := json.NewDecoder(r.Body).Decode(&ter); err != nil {
+
+
+		tracelog.Error(err, "controller","Token authentication failed, request malformed")
+		writeError(w,"Token authentication failed, request malformed: " + err.Error())
+		return
+	}
+
+	_, err := mail.ParseAddress(ter.Email)
+	if err != nil {
+		tracelog.Error(err, "controller","Token authentication failed, email invalid")
+		writeError(w,"Token authentication failed, email invalid: " + err.Error())
+		return
+	}
+
+	tracelog.Trace("controllers","Authenticate","Requesting token exchange for user [" + ter.Email + "]")
+	tracelog.Trace("controllers","Authenticate","Exchanging short term token " + ter.AccessToken[0:8] + "...")
+
+	t  := service.ExchangeAccessToken(&ter)
+
+	tracelog.Trace("controllers","Authenticate","Token exchange was successful")
+	tracelog.Trace("controllers","Authenticate","Token: " +  t.Token[0:8] + "...")
+	tracelog.Trace("controllers","Authenticate","Token Exp(secs): " + strconv.Itoa(t.ExpiryInSeconds))
+
+
+	tracelog.Trace("controllers","Authenticate","Token Exp(date): " + t.Expires.String())
+
+	//responseStatus, token := service.Login(&ter)
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(responseStatus)
-	w.Write(token)
+	//w.WriteHeader(responseStatus)
+	w.Write([]byte("giggles"))
 }
 
 func RefreshToken(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
@@ -37,3 +76,9 @@ func Logout(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 		w.WriteHeader(http.StatusOK)
 	}
 }
+
+
+
+
+
+

@@ -6,6 +6,10 @@ import (
 	"github.com/quobix/lulaparty.io/model"
 	"os"
 	"github.com/quobix/lulaparty.io/security"
+	"strings"
+	"strconv"
+	"time"
+	"github.com/quobix/lulaparty.io/util"
 )
 
 type TokenAuthentication struct {
@@ -59,4 +63,35 @@ func Logout(req *http.Request) error {
 
 	*/
 	return nil
+}
+
+func ExchangeAccessToken(ter *model.TokenExchangeRequest) *model.AccessToken {
+
+	cid := os.Getenv("LLP_FBAPPID")
+	sec := os.Getenv("LLP_FBSECRET")
+	r, err := http.Get(OAUTH_URI +
+	"?client_id=" + cid +
+	"&grant_type=fb_exchange_token&" +
+	"&client_secret=" + sec +
+	"&fb_exchange_token=" + ter.AccessToken)
+
+	if err == nil {
+		auth := util.ReadBody(r)
+		var token model.AccessToken
+
+		tokenArr := strings.Split(auth, "&")
+
+		token.Token = strings.Split(tokenArr[0], "=")[1]
+		expireInt, err := strconv.Atoi(strings.Split(tokenArr[1], "=")[1])
+
+		if err == nil {
+			token.ExpiryInSeconds = int(expireInt)
+			ti :=time.Now().UTC()
+			token.Expires = time.Date(ti.Year(), ti.Month(), ti.Day(),
+				ti.Hour(), ti.Minute(), ti.Second()+token.ExpiryInSeconds,
+				ti.Nanosecond(), time.UTC)
+		}
+		return &token
+	}
+	return new(model.AccessToken)
 }

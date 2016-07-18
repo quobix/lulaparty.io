@@ -5,15 +5,15 @@ import (
         "fmt"
         "regexp"
         "strings"
-        "github.com/quobix/lulaparty.io/model"
-        "os"
-        "path"
         "gopkg.in/mgo.v2/bson"
         "math"
         "time"
         "math/rand"
         "crypto/md5"
         "encoding/hex"
+        "net/http"
+        "io/ioutil"
+        "os"
 )
 
 const (
@@ -35,19 +35,14 @@ func ValidateUUID(text string) bool {
 }
 
 
-func GenerateGalleryItemUUID(u *model.User, g *model.Gallery, i *model.GalleryItem, f *os.File) string {
-       return GenerateRawGalleryItemUUID(u.Id, g.Id, i.Id, f)
-}
-
-func GenerateRawGalleryItemUUID(u bson.ObjectId, g bson.ObjectId, i bson.ObjectId, f *os.File) string {
-        return u.Hex() + FILE_UUID_FSSEP + g.Hex() +
-                FILE_UUID_FSSEP + i.Hex() + FILE_UUID_EXT + path.Base(f.Name())
-}
-
-
 func Round(f float64) float64 {
         return math.Floor(f + .5)
 }
+func RoundPlusInt(f float64, places int) (int) {
+        shift := math.Pow(10, float64(places))
+        return int(Round(f * shift) / shift);
+}
+
 func RoundPlus(f float64, places int) (float64) {
         shift := math.Pow(10, float64(places))
         return Round(f * shift) / shift;
@@ -76,4 +71,16 @@ func GetMD5Hash(text string) string {
         hasher := md5.New()
         hasher.Write([]byte(text))
         return hex.EncodeToString(hasher.Sum(nil))
+}
+
+func ReadBody(resp *http.Response) string {
+        defer resp.Body.Close()
+        body, err := ioutil.ReadAll(resp.Body)
+
+        if err != nil {
+                fmt.Println(err)
+                os.Exit(1)
+        }
+
+        return string(body)
 }

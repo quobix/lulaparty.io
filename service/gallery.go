@@ -6,7 +6,6 @@ import (
         "github.com/quobix/lulaparty.io/gcp"
         "fmt"
         "github.com/quobix/lulaparty.io/data"
-        "github.com/quobix/lulaparty.io/util"
 )
 
 func PersistGalleryItemToStorage(g *model.GalleryItem, f *os.File, ac *model.AppConfig) (*model.GalleryItem, error) {
@@ -15,7 +14,7 @@ func PersistGalleryItemToStorage(g *model.GalleryItem, f *os.File, ac *model.App
                 return nil, fmt.Errorf("unable to create a storage service! %v", err)
         }
 
-        uri := util.GenerateRawGalleryItemUUID(g.OwnerId, g.GalleryId, g.Id, f)
+        uri := model.GenerateRawGalleryItemUUID(g.OwnerId, g.GalleryId, g.Id, f)
         _, err = gcp.UploadObjectToBucketUsingName(model.BUCKET_GALLERY, f, uri, service, ac)
         if(err!=nil) {
                 return nil, fmt.Errorf("unable to persist file to bucket! %v", err)

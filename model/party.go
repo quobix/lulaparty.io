@@ -3,8 +3,7 @@ package model
 import (
         "gopkg.in/mgo.v2/bson"
         "time"
-        "fmt"
-        "math"
+        "github.com/quobix/lulaparty.io/util"
 )
 
 type Party struct {
@@ -143,79 +142,15 @@ func (n *Party) IsOpen() bool {
         return false
 }
 
-func round(f float64) float64 {
-        return math.Floor(f + .5)
-}
-func roundPlus(f float64, places int) (int) {
-        shift := math.Pow(10, float64(places))
-        return int(round(f * shift) / shift);
-}
 
-type timeDiffClosure func(t time.Time) bool
 
-func timeDiffFormatter(h,m,s,d,mo,y int) string {
-        var pl = "s"
-        h1 := h-(d*24)
-        if (y <= 0 && mo >= 1) {
-                return fmt.Sprintf("%d " + pluralize("Month", pl, mo), mo)
-        }
-        if (y <= 0 && d >= 1 && h1 <=0) {
-                return fmt.Sprintf("%d " + pluralize("Day", pl, d), d)
-        }
 
-        if (y <= 0 && d >= 1 && h1>=1) {
-                return fmt.Sprintf("%d " + pluralize("Day", pl, d) + ", %d " +
-                pluralize("Hour", pl,h1), d, h1)
-        }
-        if (y <= 0 && d <= 0 && h >= 1 && m <= 0) {
-                return fmt.Sprintf("%d " + pluralize("Hour", pl, h), h)
-        }
-
-        if (y <= 0 && d <= 0 && h >= 1 ) {
-                return fmt.Sprintf("%d " + pluralize("Hour", pl, h) + ", %d " +
-                pluralize("Min", pl, m), h, m)
-        }
-
-        if (y <= 0 && h <= 0 && m >= 1 && s >= 1) {
-                return fmt.Sprintf("%d " + pluralize("Minute", pl, m) + ", %d " +
-                pluralize("Second", pl, s), m, s)
-        }
-
-        if (y <= 0 && h <= 0 && m >= 1) {
-                return fmt.Sprintf("%d " + pluralize("Minute", pl, m), m)
-        }
-
-        if (y <= 0 && m <= 0 && s >= 1) {
-                return fmt.Sprintf("%d " + pluralize("Second", pl, s), s)
-        }
-        return fmt.Sprintf("%d " + pluralize("Year", pl, y), y)
-}
-
-func timeDiffHelper(diff time.Time, def string, m timeDiffClosure) string {
-
-        t := time.Now().UTC()
-        d := t.Sub(diff)
-        seconds := d.Seconds()
-        hours := d.Hours()
-        minutes := d.Minutes()
-
-        if (m(diff)) {
-                h := roundPlus(hours * -1, 0)
-                m := roundPlus(minutes * -1, 0) - (h * 60)
-                s := roundPlus(seconds * -1, 0) - (m * 60)
-                d := roundPlus(hours * -1, 0) / 24
-                mo := d / 30
-                y := mo / 12
-                return timeDiffFormatter(h,m,s,d,mo,y)
-        }
-        return def
-}
 
 func (n *Party) StartsIn() string {
         if(n.IsOpen()) {
                 return PARTY_STARTED
         }
-        return timeDiffHelper(n.Starts, PARTY_STARTED,
+        return util.TimeDiffHelper(n.Starts, PARTY_STARTED,
                         func(t time.Time) bool {
                                 return t.After(time.Now().UTC())
                         })
@@ -223,7 +158,7 @@ func (n *Party) StartsIn() string {
 
 func (n *Party) EndsIn() string {
         if(n.IsOpen()) {
-                return timeDiffHelper(n.Ends, PARTY_ENDED,
+                return util.TimeDiffHelper(n.Ends, PARTY_ENDED,
                         func(t time.Time) bool {
                                 return time.Now().UTC().Before(t)
                         })
@@ -241,7 +176,7 @@ func (n *PartyInvite) HasExpired() bool {
 
 func (n *PartyInvite) ExpiresIn() string {
         if(!n.Accepted) {
-                return timeDiffHelper(n.Expires, PARTY_INVITE_EXPIRED,
+                return util.TimeDiffHelper(n.Expires, PARTY_INVITE_EXPIRED,
                         func(t time.Time) bool {
                                 return time.Now().UTC().Before(t)
                         })
@@ -250,7 +185,4 @@ func (n *PartyInvite) ExpiresIn() string {
         }
 }
 
-func pluralize(val, pl string, num int) string {
-        if(num>1) { return val + pl }
-        return val
-}
+

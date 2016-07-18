@@ -4,10 +4,8 @@ import (
         "testing"
         . "github.com/smartystreets/goconvey/convey"
         "strings"
-        "os"
-        "github.com/quobix/lulaparty.io/model"
         "gopkg.in/mgo.v2/bson"
-        "path"
+
 
 )
 
@@ -51,50 +49,7 @@ func TestGenerateUUID(t *testing.T) {
         })
 }
 
-func TestGenerateGalleryItemUUID(t *testing.T) {
-        Convey("Given we have access to the OS, we should be able to read in a file " +
-                "from the test-assets and validate the read was a success", t, func() {
 
-                var asset1 = "../test-assets/pic1.jpg"
-                file, err := os.Open(asset1)
-                So(err, ShouldBeNil)
-                So(file, ShouldNotBeNil)
-                So(file.Name(), ShouldEqual, asset1)
-                s, _ := file.Stat();
-                So(s, ShouldNotBeNil)
-                So(s.Size(), ShouldEqual, 345248)
-
-                var u                   *model.User
-                var g                   *model.Gallery
-                var gi                  *model.GalleryItem
-
-
-                u = &model.User {
-                        Id: bson.NewObjectId(),
-                }
-                g = &model.Gallery {
-                        Id: bson.NewObjectId(),
-                }
-                gi = &model.GalleryItem {
-                        Id: bson.NewObjectId(),
-                }
-
-                Convey("We should then be able to generate an expected gallery item UUID for storage in gcp", func() {
-
-                        ext     :=path.Ext(file.Name())
-                        fn      :=path.Base(file.Name())
-                        So(ext, ShouldEqual, ".jpg")
-                        So(fn, ShouldEqual, "pic1.jpg")
-
-                        gi_uuid := GenerateGalleryItemUUID(u, g, gi, file)
-
-                        var expected = u.Id.Hex() + FILE_UUID_FSSEP + g.Id.Hex() +
-                                        FILE_UUID_FSSEP + gi.Id.Hex() + FILE_UUID_EXT + fn
-
-                        So(expected, ShouldEqual, gi_uuid)
-                })
-        })
-}
 
 func TestRound(t *testing.T) {
         Convey("We should be able to validate rounding up",t,  func() {

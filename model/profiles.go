@@ -38,6 +38,17 @@ type FBProfile struct {
         Email                   string          `json:"email"`
         Created                 time.Time       `json:"created"`
         Updated                 time.Time       `json:"updated"`
+        AccessToken             bson.ObjectId   `json:"token_id" bson:"token_id,omitempty"`
+}
+
+
+type AccessToken struct {
+        Id                      bson.ObjectId   `json:"id" bson:"_id,omitempty"`
+        Token                   string          `json:"token"`
+        ExpiryInSeconds         int             `json:"expires_seconds"`
+        Expires                 time.Time       `json:"expires"`
+        Created                 time.Time       `json:"created"`
+        Updated                 time.Time       `json:"updated"`
 }
 
 

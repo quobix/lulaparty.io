@@ -20,6 +20,7 @@ type User struct {
         LastAuth                time.Time       `json:"last_auth"`
         TrialExpired            bool            `json:"trial_expired"`
         Sales                   []bson.ObjectId `json:"sales" bson:"sales,omitempty"`
+        FBAuthToken             string          `json:"fbauth_token"`
 }
 
 type Address struct {

@@ -3,6 +3,9 @@ package model
 import (
         "gopkg.in/mgo.v2/bson"
         "time"
+        "os"
+        "path"
+        "github.com/quobix/lulaparty.io/util"
 )
 
 const (
@@ -78,4 +81,13 @@ func (n *Gallery) ContainsItem(i bson.ObjectId) bool {
                 }
         }
         return false;
+}
+
+func GenerateGalleryItemUUID(u *User, g *Gallery, i *GalleryItem, f *os.File) string {
+        return GenerateRawGalleryItemUUID(u.Id, g.Id, i.Id, f)
+}
+
+func GenerateRawGalleryItemUUID(u bson.ObjectId, g bson.ObjectId, i bson.ObjectId, f *os.File) string {
+        return u.Hex() + util.FILE_UUID_FSSEP + g.Hex() +
+        util.FILE_UUID_FSSEP + i.Hex() + util.FILE_UUID_EXT + path.Base(f.Name())
 }

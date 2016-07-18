@@ -16,7 +16,7 @@
         // for FB.getLoginStatus().
         if (response.status === 'connected') {
             // Logged into your app and Facebook.
-            testAPI();
+            testAPI(response);
         } else if (response.status === 'not_authorized') {
             // The person is logged into Facebook, but not your app.
             document.getElementById('status').innerHTML = 'Please log ' +
@@ -76,14 +76,42 @@
 
     // Here we run a very simple test of the Graph API after login is
     // successful.  See statusChangeCallback() for when this call is made.
-    function testAPI() {
+    function testAPI(rx) {
         console.log('Welcome!  Fetching your information.... ');
-        FB.api('/me', function(response) {
+        FB.api('/me', { locale: 'en_US', fields: 'name, email' }, function(response) {
             console.log('Successful login for: ' + response.name);
             document.getElementById('status').innerHTML =
                     'Thanks for logging in, ' + response.name + '!';
+
+            exchangeToken(response,rx)
+
         });
     }
+
+    function exchangeToken(response,rx) {
+        console.log(response)
+        console.log(rx)
+        var xhttp = new XMLHttpRequest();
+        var u =  rx.authResponse
+        u.email = response.email
+
+
+
+
+
+        xhttp.onreadystatechange = function() {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                console.log(xhttp.responseText);
+            }
+        };
+        xhttp.open("POST", "/token-exchange", true);
+        xhttp.send(JSON.stringify(u));
+
+
+
+    }
+
+
 </script>
 
 <!--
@@ -97,6 +125,9 @@
 
 <div id="status">
 </div>
+
+
+
 
 </body>
 </html>

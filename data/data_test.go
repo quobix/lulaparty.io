@@ -16,6 +16,9 @@ var pass        string
 var host        string
 var db          string
 var jwtsec      string
+var fbsec       string
+var fbappid     string
+
 var port        int
 var sess        *mgo.Session
 var ac          *model.AppConfig
@@ -69,6 +72,10 @@ func Setup() {
         user = os.Getenv("LLP_TEST_DB_USER")
         db = os.Getenv("LLP_TEST_DB")
         jwtsec = os.Getenv("LLP_JWTSECRET")
+
+        fbsec = os.Getenv("LLP_FBSECRET")
+        fbappid = os.Getenv("LLP_FBAPPID")
+
 
         test_fbp = &model.FBProfile {
                 Id: bson.NewObjectId(),
@@ -187,6 +194,16 @@ func TestGenerateURI(t *testing.T) {
                 Convey("The $LLP_JWTSECRET env var should have been set", func() {
                         So(jwtsec, ShouldNotBeNil)
                         So(len(jwtsec), ShouldBeGreaterThan, 0)
+                })
+
+                Convey("The $LLP_FBSECRET env var should have been set", func() {
+                        So(fbsec, ShouldNotBeNil)
+                        So(len(fbsec), ShouldBeGreaterThan, 0)
+                })
+
+                Convey("The $LLP_FBAPPID env var should have been set", func() {
+                        So(fbappid, ShouldNotBeNil)
+                        So(len(fbappid), ShouldBeGreaterThan, 0)
                 })
 
         })

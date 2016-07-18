@@ -52,6 +52,19 @@ type AppConfig struct {
         JTWSecret                       string          `json:"-"`
 }
 
+type ServiceResponse struct {
+        Error   	                bool		`json:"error"`
+        Message 	                string		`json:"message"`
+}
+
+type TokenExchangeRequest struct {
+        AccessToken   	                string        	`json:"accessToken"`
+        ExpiresIn     	                int64        	`json:"expiresIn"`
+        SignedRequest 	                string        	`json:"signedRequest"`
+        UserId        	                string        	`json:"userId"`
+        Email		                string		`json:"email"`
+}
+
 func (c *AppConfig) CopyDBSession() (*mgo.Session) {
         if(c.DBSession == nil) {
                 panic("no DB session in app config, unable to create a new copy")
