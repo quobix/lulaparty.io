@@ -10,6 +10,7 @@ import (
 const (
         COLLECTION_TEST_POSTFIX         = "_test"
         COLLECTION_FBPROFILE            = "fbprofile"
+        COLLECTION_ACCESSTOKEN          = "accesstoken"
         COLLECTION_ADDRESS              = "address"
         COLLECTION_USER                 = "user"
         COLLECTION_CUSTOMER_PROFILE     = "customer_profile"

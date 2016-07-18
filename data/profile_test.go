@@ -5,6 +5,7 @@ import (
         . "github.com/smartystreets/goconvey/convey"
         "gopkg.in/mgo.v2/bson"
         "github.com/quobix/lulaparty.io/model"
+        "time"
 )
 
 func TestCreateCustomerProfile(t *testing.T) {
@@ -149,6 +150,40 @@ func TestUpdateFBProfile(t *testing.T) {
         })
 
 }
+
+func TestAddAccessTokenToFBProfile(t *testing.T) {
+
+        Convey("Given that we create a FB profile, we should be able to add an access token to it.", t, func() {
+
+                at := &model.AccessToken {
+                        Token: "aabbcc",
+                        ExpiryInSeconds: 12345,
+                        Expires: time.Now().UTC() }
+
+
+                ret_fbp, err := AddAccessTokenToFBProfile(test_fbp, at, ac)
+
+                So(err, ShouldBeNil)
+                So(ret_fbp, ShouldNotBeNil)
+                So(ret_fbp.AccessToken, ShouldNotBeNil)
+
+                // refetch to check
+                p, err := GetFBProfile(uuid, ac)
+                So(err, ShouldBeNil)
+                So(p, ShouldNotBeNil)
+                So(p.AccessToken, ShouldNotBeNil)
+                So(p.AccessToken.Hex(), ShouldEqual, at.Id.Hex())
+
+                ret_at, err := GetAccessToken(p.AccessToken, ac)
+                So(err, ShouldBeNil)
+                So(ret_at, ShouldNotBeNil)
+                So(ret_at.Token, ShouldEqual, "aabbcc")
+
+        })
+
+}
+
+
 
 func TestCreateHostessProfile(t *testing.T) {
 

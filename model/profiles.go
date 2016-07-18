@@ -70,6 +70,24 @@ func (n *FBProfile) SetId(id bson.ObjectId) {
         n.Id = id
 }
 
+func (n *AccessToken) SetCreated() (time.Time) {
+        n.Created = getTime()
+        return n.Created
+}
+
+func (n *AccessToken) Update() (time.Time) {
+        n.Updated =  getTime()
+        return n.Updated
+}
+
+func (n *AccessToken) GetId() bson.ObjectId {
+        return n.Id
+}
+
+func (n *AccessToken) SetId(id bson.ObjectId) {
+        n.Id = id
+}
+
 func (n *HostessProfile) SetCreated() (time.Time) {
         n.Created = getTime()
         return n.Created

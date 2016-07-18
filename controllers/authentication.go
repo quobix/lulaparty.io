@@ -8,10 +8,7 @@ import (
 	"github.com/quobix/lulaparty.io/service"
 	"strconv"
 	"github.com/goinggo/tracelog"
-
 	"net/mail"
-
-
 )
 
 func writeError(w http.ResponseWriter, msg string) {
