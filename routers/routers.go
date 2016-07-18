@@ -2,11 +2,12 @@ package routers
 
 import (
 	"github.com/gorilla/mux"
+	"github.com/quobix/lulaparty.io/model"
 )
 
-func InitRoutes() *mux.Router {
+func InitRoutes(ac *model.AppConfig) *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
-	router = SetHelloRoutes(router)
-	router = SetAuthenticationRoutes(router)
+	router = SetHelloRoutes(router, ac)
+	router = SetAuthenticationRoutes(router, ac)
 	return router
 }

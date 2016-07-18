@@ -17,7 +17,6 @@ func writeError(w http.ResponseWriter, msg string) {
 }
 
 
-
 func Authenticate(w http.ResponseWriter, r *http.Request) {
 	tracelog.Trace("controllers","Authenticate","Executing authentication controller")
 
@@ -36,6 +35,8 @@ func Authenticate(w http.ResponseWriter, r *http.Request) {
 		writeError(w,"Token authentication failed, email invalid: " + err.Error())
 		return
 	}
+
+
 
 	tracelog.Trace("controllers","Authenticate","Requesting token exchange for user [" + ter.Email + "]")
 	tracelog.Trace("controllers","Authenticate","Exchanging short term token " + ter.AccessToken[0:8] + "...")

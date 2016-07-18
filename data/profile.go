@@ -62,7 +62,6 @@ func AddAccessTokenToFBProfile(profile *model.FBProfile, at *model.AccessToken, 
         sess := ac.CopyDBSession()
         defer sess.Close()
 
-        // first of all we need to create the profile and the address documents
         at, aErr := CreateAccessToken(at, ac)
         if(aErr !=nil ) {
                 return nil, fmt.Errorf(
@@ -81,6 +80,15 @@ func AddAccessTokenToFBProfile(profile *model.FBProfile, at *model.AccessToken, 
         return profile, nil;
 }
 
+func FindFBProfileByEmail(str string, ac *model.AppConfig) (*model.FBProfile, error) {
+        p := &model.FBProfile{}
+        err := queryHelperSingle(bson.M{model.MODEL_JSON_EMAIL: str}, p,
+                ac, model.COLLECTION_FBPROFILE)
+        if err != nil {
+                return nil, err
+        }
+        return p, nil
+}
 
 func GetFBProfile(id bson.ObjectId, ac *model.AppConfig) (*model.FBProfile, error) {
         p := &model.FBProfile{}

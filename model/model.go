@@ -30,6 +30,7 @@ const (
         MODEL_JSON_CREATED              = "created"
         MODEL_JSON_UPDATED              = "updated"
         MODEL_JSON_NAME                 = "name"
+        MODEL_JSON_EMAIL                = "email"
         MODEL_JSON_CAPTION              = "caption"
         MODEL_JSON_SHORTCODE            = "shortcode"
         BUCKET_GALLERY                  = "gallery"

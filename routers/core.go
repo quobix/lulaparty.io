@@ -6,9 +6,10 @@ import (
 	//"github.com/quobix/lulaparty.io/security"
 	//"github.com/quobix/lulaparty.io/controllers"
 	"net/http"
+	"github.com/quobix/lulaparty.io/model"
 )
 
-func SetHelloRoutes(router *mux.Router) *mux.Router {
+func SetHelloRoutes(router *mux.Router, ac *model.AppConfig) *mux.Router {
 	router.Handle("/",
 		//negroni.New(
 		//	negroni.HandlerFunc(controllers.HelloController),

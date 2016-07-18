@@ -84,6 +84,7 @@ func TestUpdateCustomerProfile(t *testing.T) {
 
 }
 
+
 func TestCreateFBProfile(t *testing.T) {
 
 
@@ -128,17 +129,17 @@ func TestUpdateFBProfile(t *testing.T) {
 
         Convey("Given that we can retrive the record, lets update it", t, func() {
 
-                test_fbp.Firstname = "David Thomas"
+                test_fbp.Firstname = "Dave"
                 test_fbp.Lastname  = "Shanley"
-                test_fbp.Email =  "dave@quobix.com"
+                test_fbp.Email =  "not@arealone.com"
 
                 ret_fbp, err := UpdateFBProfile(test_fbp, ac)
 
                 So(err, ShouldBeNil)
                 So(ret_fbp, ShouldNotBeNil)
-                So(ret_fbp.Firstname, ShouldEqual, "David Thomas")
+                So(ret_fbp.Firstname, ShouldEqual, "Dave")
                 So(ret_fbp.Lastname, ShouldEqual, "Shanley")
-                So(ret_fbp.Email, ShouldEqual, "dave@quobix.com")
+                So(ret_fbp.Email, ShouldEqual, "not@arealone.com")
                 So(ret_fbp.Updated.After(ret_fbp.Created), ShouldBeTrue)
                 So(ret_fbp.Created.Equal(ret_fbp.Created), ShouldBeTrue)
 
@@ -148,8 +149,26 @@ func TestUpdateFBProfile(t *testing.T) {
 
 
         })
+}
+
+func TestFindFBProfileByEmail(t *testing.T) {
+        Convey("Given that we have persisted a profile, we should be able to find it by email", t, func() {
+
+                ret_fbp, err := FindFBProfileByEmail("not@arealone.com", ac)
+
+                So(err, ShouldBeNil)
+                So(ret_fbp, ShouldNotBeNil)
+                So(ret_fbp.Firstname, ShouldEqual, "Dave")
+                So(ret_fbp.Lastname, ShouldEqual, "Shanley")
+                So(ret_fbp.Email, ShouldEqual, "not@arealone.com")
+
+                ret_fbp, err = FindFBProfileByEmail("not@here.mate", ac)
+                So(err, ShouldNotBeNil)
+                So(ret_fbp, ShouldBeNil)
+        })
 
 }
+
 
 func TestAddAccessTokenToFBProfile(t *testing.T) {
 

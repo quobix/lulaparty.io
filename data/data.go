@@ -66,9 +66,7 @@ func GenerateCollectionName(ac *model.AppConfig, collection string) string {
 
 func CreateTestSession() (*model.AppConfig) {
 
-
         ac := CreateAppConfig(true)
-
         ac.DBSession.DB(ac.DBName).DropDatabase() // cleanup.
         return ac
 
