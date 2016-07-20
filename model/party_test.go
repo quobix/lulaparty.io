@@ -236,7 +236,7 @@ func TestParty_StartsIn(t *testing.T) {
                         Enabled: true }
 
                 Convey("There should be 1 Hour and 1 Mins Left", func () {
-                        So(p3.StartsIn(), ShouldEqual, "1 Hour, 10 Mins")
+                        So(p3.StartsIn(), ShouldEqual, "1 Hour, 10 Minutes")
                 })
 
                 p4 := &Party {
@@ -245,7 +245,7 @@ func TestParty_StartsIn(t *testing.T) {
                         Enabled: true }
 
                 Convey("There should be 10 Hours and 22 Mins Left", func () {
-                        So(p4.StartsIn(), ShouldEqual, "10 Hours, 22 Mins")
+                        So(p4.StartsIn(), ShouldEqual, "10 Hours, 22 Minutes")
                 })
 
                 p5 := &Party {
@@ -319,7 +319,7 @@ func TestParty_EndsIn(t *testing.T) {
                 Convey("There should be 3 hours, 17 minutes left", func () {
                         So(p2.IsOpen(), ShouldBeTrue)
                         So(p2.StartsIn(), ShouldEqual, PARTY_STARTED)
-                        So(p2.EndsIn(), ShouldEqual, "3 Hours, 17 Mins")
+                        So(p2.EndsIn(), ShouldEqual, "3 Hours, 17 Minutes")
                 })
 
                 p3 := &Party {
@@ -361,7 +361,7 @@ func TestParty_EndsIn(t *testing.T) {
 
                 Convey("Party should not have started and shgould be closed", func () {
                         So(p5.IsOpen(), ShouldBeFalse)
-                        So(p5.StartsIn(), ShouldEqual, "1 Hour, 2 Mins")
+                        So(p5.StartsIn(), ShouldEqual, "1 Hour, 2 Minutes")
                         So(p5.EndsIn(), ShouldEqual, PARTY_CLOSED)
                 })
 
@@ -460,7 +460,7 @@ func TestPartyInvite_ExpiresIn(t *testing.T) {
 
 
                 Convey("There should be 3 hours, 17 minutes left", func () {
-                        So(p2.ExpiresIn(), ShouldEqual, "3 Hours, 17 Mins")
+                        So(p2.ExpiresIn(), ShouldEqual, "3 Hours, 17 Minutes")
 
                 })
 

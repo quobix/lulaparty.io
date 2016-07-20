@@ -5,19 +5,14 @@ import (
         . "github.com/smartystreets/goconvey/convey"
         "strings"
         "gopkg.in/mgo.v2/bson"
-
-
+        "net/http"
 )
-
 
 func TestGenerateUUID(t *testing.T) {
         Convey("Given we have access to the OS, we should be able to call uuidgen and get an ID", t, func() {
-
-
                 uuid := GenerateUUID()
                 So(uuid, ShouldNotBeNil)
                 So(len(uuid), ShouldBeGreaterThan, 10)
-
 
                 Convey("We should also be able to check the structure for accurate lengths", func() {
 
@@ -38,7 +33,6 @@ func TestGenerateUUID(t *testing.T) {
                                 }
                                 i++;
                         }
-
                 })
 
                 Convey("It should also return a valid UUID", func() {
@@ -48,8 +42,6 @@ func TestGenerateUUID(t *testing.T) {
                 })
         })
 }
-
-
 
 func TestRound(t *testing.T) {
         Convey("We should be able to validate rounding up",t,  func() {
@@ -97,7 +89,6 @@ func TestRandStringRunes(t *testing.T) {
                 So(len(r6), ShouldNotEqual, len(r7))
                 So(r7, ShouldNotEqual, r8)
                 So(len(r7), ShouldNotEqual, len(r8))
-
         })
 }
 
@@ -107,7 +98,6 @@ func TestSliceHelper(t *testing.T) {
                 id1 := bson.NewObjectId();
                 id2 := bson.NewObjectId();
                 id3 := bson.NewObjectId();
-
                 vals := []bson.ObjectId {id1, id2, id3}
 
                 i:=-1
@@ -130,9 +120,33 @@ func TestSliceHelper(t *testing.T) {
                                 i = idx
                         }
                 }
-
-
-
         })
 }
 
+func TestGetMD5Hash(t *testing.T) {
+        Convey("We should be able to validate that our MD5 Hash generator matches the output of a verified one",t,  func() {
+                // generated with an external tool
+                h := "8dedcde9e72b1cdbcfe341b7306d0c8f"
+                k := "pup|shop|trick|shot|cotton|fox|maggiepop"
+                v := GetMD5Hash(k)
+                So(v, ShouldNotBeNil)
+                So(v, ShouldEqual, h)
+        })
+}
+
+func TestReadBody(t *testing.T) {
+        Convey("Given we can connect to a remote resource, we should be able to parse the body",t,  func() {
+                resp, err := http.Get("http://httpbin.org/robots.txt")
+
+                So(err, ShouldBeNil)
+                So(resp, ShouldNotBeNil)
+                So(resp.StatusCode, ShouldNotEqual, 401)
+                So(resp.StatusCode, ShouldNotEqual, 404)
+                So(resp.StatusCode, ShouldEqual, 200)
+
+                str := ReadBody(resp);
+
+                So(strings.Contains(str, "User-agent: *"), ShouldBeTrue)
+                So(strings.Contains(str, "Disallow: /deny"), ShouldBeTrue)
+        })
+}

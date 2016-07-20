@@ -30,8 +30,20 @@ func TestTimeDiffHelper(t *testing.T) {
                 diff6 := time.Date(ti.Year(), ti.Month(), ti.Day(),
                         ti.Hour()+8, ti.Minute()+22, ti.Second(), ti.Nanosecond(), time.UTC)
 
-                diff7 := time.Date(ti.Year(), ti.Month(), ti.Day(),
-                        ti.Hour(), ti.Minute()+4, ti.Second()+13, ti.Nanosecond(), time.UTC)
+                diff7 := time.Date(ti.Year(), ti.Month(), ti.Day()+1,
+                        ti.Hour()+8, ti.Minute(), ti.Second(), ti.Nanosecond(), time.UTC)
+
+                diff8 := time.Date(ti.Year(), ti.Month(), ti.Day(),
+                        ti.Hour()+9, ti.Minute(), ti.Second(), ti.Nanosecond(), time.UTC)
+
+                diff9 := time.Date(ti.Year(), ti.Month(), ti.Day(),
+                        ti.Hour(), ti.Minute()+28, ti.Second()+17, ti.Nanosecond(), time.UTC)
+
+                diff10 := time.Date(ti.Year(), ti.Month(), ti.Day(),
+                        ti.Hour(), ti.Minute()+5, ti.Second(), ti.Nanosecond(), time.UTC)
+
+                diff11 := time.Date(ti.Year(), ti.Month(), ti.Day(),
+                        ti.Hour(), ti.Minute(), ti.Second()+2, ti.Nanosecond(), time.UTC)
 
                 Convey("There should be 3 Years Left", func () {
                         So(TimeDiffHelper(diff1,"", func(t time.Time) bool {
@@ -63,16 +75,40 @@ func TestTimeDiffHelper(t *testing.T) {
                         }), ShouldEqual, "2 Days")
                 })
 
-                Convey("There should be 8 Hours, 22 mins left", func () {
+                Convey("There should be 8 Hours 22 Minutes Left", func () {
                         So(TimeDiffHelper(diff6,"", func(t time.Time) bool {
                                 return true
-                        }), ShouldEqual, "8 Hours, 22 Mins")
+                        }), ShouldEqual, "8 Hours, 22 Minutes")
                 })
 
-                Convey("There should be 4 Mins and 13 Seconds left", func () {
+                Convey("There should be 1 Day and 8 Hours left", func () {
                         So(TimeDiffHelper(diff7,"", func(t time.Time) bool {
                                 return true
-                        }), ShouldEqual, "4 Minutes, 13 Seconds")
+                        }), ShouldEqual, "1 Day, 8 Hours")
+                })
+
+                Convey("There should be 9 Hours Left", func () {
+                        So(TimeDiffHelper(diff8,"", func(t time.Time) bool {
+                                return true
+                        }), ShouldEqual, "9 Hours")
+                })
+
+                Convey("There should be 28 Minutes and 17 seconds Left", func () {
+                        So(TimeDiffHelper(diff9,"", func(t time.Time) bool {
+                                return true
+                        }), ShouldEqual, "28 Minutes, 17 Seconds")
+                })
+
+                Convey("There should be 5 Minutes Left", func () {
+                        So(TimeDiffHelper(diff10,"", func(t time.Time) bool {
+                                return true
+                        }), ShouldEqual, "5 Minutes")
+                })
+
+                Convey("There should be 2 Seconds Left", func () {
+                        So(TimeDiffHelper(diff11,"", func(t time.Time) bool {
+                                return true
+                        }), ShouldEqual, "2 Seconds")
                 })
         })
 }

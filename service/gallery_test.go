@@ -25,9 +25,7 @@ var gal              *model.Gallery
 var galId bson.ObjectId
 var galItemId bson.ObjectId
 
-
 func TestMain(m *testing.M) {
-
         Setup()
         fmt.Fprintf(os.Stderr, "starting service tests!\n")
         result := m.Run()
@@ -37,14 +35,8 @@ func TestMain(m *testing.M) {
 }
 
 func Setup() {
-
         ac = data.CreateTestSession()
         service, _ = gcp.CreateStorageService()
-
-
-
-
-
 }
 
 func Teardown() {
@@ -54,10 +46,7 @@ func Teardown() {
 func TestPersistGalleryItemToStorage(t *testing.T) {
         var fuuid string
 
-
         Convey("Given we are able to store a gallery item, we should be able to persist an object and wire the references", t, func () {
-
-
                 _, err := gcp.CreateBucket(model.BUCKET_GALLERY, service, ac)
 
                 file, err := os.Open(asset1)
@@ -75,31 +64,25 @@ func TestPersistGalleryItemToStorage(t *testing.T) {
 
                 gal, _ = data.CreateGallery(_g, ac)
                 galItem = _gi
-
                 galId = gal.Id
                 galItemId = galItem.Id
-
 
                 ret_gi, err := PersistGalleryItemToStorage(galItem, file, ac)
 
                 So(err, ShouldBeNil)
                 So(ret_gi, ShouldNotBeNil)
 
-                time.Sleep(500 * time.Millisecond)
+                time.Sleep(500 * time.Millisecond) // we need a second here to let GCP catch up
 
                 gi1, gierr := data.GetGalleryItem(ret_gi.Id, ac)
-
                 fuuid=gi1.FileUUID
 
                 So(gierr, ShouldBeNil)
                 So(gi1, ShouldNotBeNil)
                 So(fuuid, ShouldEqual, galItem.FileUUID)
-
-
         })
 
         Convey("And given we can wire and persist, we should be able to verify the objects exist and are correctly wired", t, func () {
-
                 resp, err := http.Get(gcp.GenerateObjectURI(model.BUCKET_GALLERY, fuuid, ac))
 
                 So(err, ShouldBeNil)
@@ -110,7 +93,6 @@ func TestPersistGalleryItemToStorage(t *testing.T) {
                 _g, err := data.GetGallery(galId, ac)
                 So(err, ShouldBeNil)
                 So(_g.ContainsItem(galItemId), ShouldBeTrue)
-
         })
 
 }

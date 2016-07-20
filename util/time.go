@@ -32,7 +32,7 @@ func TimeDiffFormatter(h,m,s,d,mo,y int) string {
 
         if (y <= 0 && d <= 0 && h >= 1 ) {
                 return fmt.Sprintf("%d " + Pluralize("Hour", pl, h) + ", %d " +
-                Pluralize("Min", pl, m), h, m)
+                Pluralize("Minute", pl, m), h, m)
         }
 
         if (y <= 0 && h <= 0 && m >= 1 && s >= 1) {

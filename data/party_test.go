@@ -425,7 +425,7 @@ func TestCreatePartyInvite(t *testing.T) {
 
                 So(err, ShouldBeNil)
                 So(ret_pinv.Created, ShouldNotBeNil)
-                So(ret_pinv.ExpiresIn(), ShouldEqual, "12 Hours, 2 Mins")
+                So(ret_pinv.ExpiresIn(), ShouldEqual, "12 Hours, 2 Minutes")
                 So(ret_pinv.HasExpired(), ShouldBeFalse)
 
         })
