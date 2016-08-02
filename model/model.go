@@ -5,6 +5,8 @@ import (
         "gopkg.in/mgo.v2/bson"
         "time"
         "reflect"
+        "net/http"
+        "github.com/gorilla/context"
 )
 
 const (
@@ -34,6 +36,7 @@ const (
         MODEL_JSON_CAPTION              = "caption"
         MODEL_JSON_SHORTCODE            = "shortcode"
         BUCKET_GALLERY                  = "gallery"
+        SYS_APPCONFIG                      = "ac"
 )
 
 type PersistedEntity interface {
@@ -65,6 +68,13 @@ type TokenExchangeRequest struct {
         SignedRequest 	                string        	`json:"signedRequest"`
         UserId        	                string        	`json:"userId"`
         Email		                string		`json:"email"`
+}
+
+func (ac *AppConfig) InjectDBSession(fn http.HandlerFunc) http.HandlerFunc {
+        return func(w http.ResponseWriter, r *http.Request) {
+                context.Set(r, SYS_APPCONFIG, ac)
+                fn(w, r)
+        }
 }
 
 func (c *AppConfig) CopyDBSession() (*mgo.Session) {

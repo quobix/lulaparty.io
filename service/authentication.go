@@ -1,25 +1,38 @@
 package service
 
 import (
-	"encoding/json"
+	//"encoding/json"
 	"net/http"
 	"github.com/quobix/lulaparty.io/model"
 	"os"
-	"github.com/quobix/lulaparty.io/security"
+	//"github.com/quobix/lulaparty.io/security"
 	"strings"
 	"strconv"
 	"time"
 	"github.com/quobix/lulaparty.io/util"
+	//"lulaparty.io/service"
+	"github.com/quobix/lulaparty.io/data"
+	//"gopkg.in/mgo.v2"
+	"github.com/goinggo/tracelog"
+
 )
 
 type TokenAuthentication struct {
 	Token string `json:"token" form:"token"`
 }
 
-func Login(requestUser *model.User) (int, []byte) {
+func AuthenticateUser(ter *model.TokenExchangeRequest, ac *model.AppConfig) (int, []byte) {
+
+	//m := security.CreateNewManager([]byte(os.Getenv("LLP_JWTSECRET")))
+	_, err := data.GetUserByEmail(ter.Email, ac)
+	if(err != nil) {
+		tracelog.Trace("service","AuthenticateUser","New User! Not Found! Biscuits: [" + ter.Email + "]")
+	}
 
 
-	m := security.CreateNewManager([]byte(os.Getenv("LLP_JWTSECRET")))
+/*
+
+
 	token := m.CreateToken(requestUser)
 	str, err := m.SignString(token)
 
@@ -28,7 +41,8 @@ func Login(requestUser *model.User) (int, []byte) {
 	}
 	response, _ := json.Marshal(TokenAuthentication{str})
 	return http.StatusOK, response
-
+*/
+	return 0, nil
 
 }
 

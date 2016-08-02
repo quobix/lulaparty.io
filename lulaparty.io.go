@@ -12,7 +12,10 @@ import (
 func main() {
 
 	tracelog.Start(tracelog.LevelTrace)
-	router := routers.InitRoutes(data.CreateAppConfig(true))
+	ac := data.CreateAppConfig(true)
+
+
+	router := routers.InitRoutes(ac)
 	n := negroni.Classic()
 	n.UseHandler(router)
 	tracelog.Trace("main","main","Starting Lulu Service")
