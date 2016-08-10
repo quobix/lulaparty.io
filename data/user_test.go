@@ -109,8 +109,7 @@ func TestCreateUser(t *testing.T) {
 
                 So(err, ShouldBeNil)
                 So(ret_user, ShouldNotBeNil)
-                So(ret_user.Cell, ShouldEqual, "(510) 321 3877")
-
+                
                 p, err := GetFBProfile(ret_user.FBProfile, ac)
 
                 So(err, ShouldBeNil)
@@ -179,13 +178,11 @@ func TestUpdateUser(t *testing.T) {
 
 
                 test_user.Email = "pop@chop.com"
-                test_user.Cell  = "911-999-111"
-
+                
                 ret_user, err := UpdateUser(test_user, ac)
 
                 So(err, ShouldBeNil)
                 So(ret_user, ShouldNotBeNil)
-                So(ret_user.Cell, ShouldEqual, test_user.Cell)
                 So(ret_user.Email, ShouldEqual,test_user.Email)
 
 
@@ -200,7 +197,6 @@ func TestGetUserByEmail(t *testing.T) {
                 u, err := GetUserByEmail(test_user.Email, ac)
                 So(err, ShouldBeNil)
                 So(u, ShouldNotBeNil)
-                So(u.Cell, ShouldEqual, "911-999-111")
                 So(u.Email, ShouldEqual, test_user.Email)
 
                 u, err = GetUserByEmail("test@fail.com", ac)

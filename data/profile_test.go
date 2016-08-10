@@ -180,11 +180,11 @@ func TestAddAccessTokenToFBProfile(t *testing.T) {
                         Expires: time.Now().UTC() }
 
 
-                ret_fbp, err := AddAccessTokenToFBProfile(test_fbp, at, ac)
+                ret_at, err := AddAccessTokenToFBProfile(test_fbp, at, ac)
 
                 So(err, ShouldBeNil)
-                So(ret_fbp, ShouldNotBeNil)
-                So(ret_fbp.AccessToken, ShouldNotBeNil)
+                So(ret_at, ShouldNotBeNil)
+                So(ret_at.Token, ShouldNotBeNil)
 
                 // refetch to check
                 p, err := GetFBProfile(uuid, ac)
@@ -193,7 +193,7 @@ func TestAddAccessTokenToFBProfile(t *testing.T) {
                 So(p.AccessToken, ShouldNotBeNil)
                 So(p.AccessToken.Hex(), ShouldEqual, at.Id.Hex())
 
-                ret_at, err := GetAccessToken(p.AccessToken, ac)
+                ret_at, err = GetAccessToken(p.AccessToken, ac)
                 So(err, ShouldBeNil)
                 So(ret_at, ShouldNotBeNil)
                 So(ret_at.Token, ShouldEqual, "aabbcc")

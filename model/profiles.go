@@ -37,7 +37,6 @@ type FBProfile struct {
         Lastname                string          `json:"last_name"`
         Name                    string          `json:"name"`
         Email                   string          `json:"email"`
-        Picture                 string          `json:"picture"`
         Created                 time.Time       `json:"created"`
         Updated                 time.Time       `json:"updated"`
         AccessToken             bson.ObjectId   `json:"token_id" bson:"token_id,omitempty"`

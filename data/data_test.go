@@ -94,7 +94,6 @@ func Setup() {
 
         test_user = &model.User {
                 Id: bson.NewObjectId(),
-                Cell: "(510) 321 3877",
                 Email: "john@appleseed.com",
         }
 
