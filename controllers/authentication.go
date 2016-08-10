@@ -6,7 +6,7 @@ import (
     "net/http"
     "github.com/quobix/lulaparty.io/model"
     "github.com/quobix/lulaparty.io/service"
-    "strconv"
+    //"strconv"
     "github.com/goinggo/tracelog"
     "net/mail"
     "github.com/gorilla/context"
@@ -24,8 +24,7 @@ func Authenticate(w http.ResponseWriter, r *http.Request) {
 
     var ter model.TokenExchangeRequest
     if err := json.NewDecoder(r.Body).Decode(&ter); err != nil {
-
-
+        
         tracelog.Error(err, "controller","Token authentication failed, request malformed")
         writeError(w,"Token authentication failed, request malformed: " + err.Error())
         return
@@ -37,22 +36,22 @@ func Authenticate(w http.ResponseWriter, r *http.Request) {
         writeError(w,"Token authentication failed, email invalid: " + err.Error())
         return
     }
-
-    tracelog.Trace("controllers","Authenticate","Requesting token exchange for user [" + ter.Email + "]")
-    tracelog.Trace("controllers","Authenticate","Exchanging short term token " + ter.AccessToken[0:8] + "...")
-
+    
     t  := service.ExchangeAccessToken(&ter)
 
     tracelog.Trace("controllers","Authenticate","Token exchange was successful")
-    tracelog.Trace("controllers","Authenticate","Token: " +  t.Token[0:8] + "...")
-    tracelog.Trace("controllers","Authenticate","Token Exp(secs): " + strconv.Itoa(t.ExpiryInSeconds))
+    //tracelog.Trace("controllers","Authenticate","Token: " +  t.Token[0:8] + "...")
+    //tracelog.Trace("controllers","Authenticate","Token Exp(secs): " + strconv.Itoa(t.ExpiryInSeconds))
+    //tracelog.Trace("controllers","Authenticate","Token Exp(date): " + t.Expires.String())
+    
+    u, err := service.CheckForOrCreateExistingProfile(&ter, t, ac)
 
-    tracelog.Trace("controllers","Authenticate","Token Exp(date): " + t.Expires.String())
-
-    _,_ = service.AuthenticateUser(&ter, t, ac)
+    jwt := service.GenerateToken(u)
     w.Header().Set("Content-Type", "application/json")
-    //w.WriteHeader(responseStatus)
-    w.Write([]byte("giggles"))
+    h,_ := json.Marshal(jwt)
+    
+    w.WriteHeader(http.StatusOK)
+    w.Write(h)
 }
 
 func RefreshToken(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {

@@ -15,28 +15,33 @@ import (
     //"gopkg.in/mgo.v2"
     //"github.com/goinggo/tracelog"c
     //"lulaparty.io/service"
-    "encoding/json"
+    //"encoding/json"
 )
 
 type TokenAuthentication struct {
     Token string `json:"token" form:"token"`
 }
 
+func GenerateToken(u *model.User) *TokenAuthentication {
+    
+    m := security.CreateNewManager([]byte(os.Getenv("LLP_JWTSECRET")))
+    token := m.CreateToken(u)
+    s, _ :=  m.SignString(token)
+    return &TokenAuthentication {
+        Token: s }
+    
+    
+}
+
+/*
 func AuthenticateUser(ter *model.TokenExchangeRequest,
     at *model.AccessToken, ac *model.AppConfig) (int, []byte) {
     
-    m := security.CreateNewManager([]byte(os.Getenv("LLP_JWTSECRET")))
-    u, err := CheckForOrCreateExistingProfile(ter, at, ac)
-    token := m.CreateToken(u)
-    str, err := m.SignString(token)
-    
-    if err != nil {
-        return http.StatusUnauthorized, []byte("")
-    }
-    response, _ := json.Marshal(TokenAuthentication{str})
+   
     return http.StatusOK, response
 }
 
+*/
 func RefreshToken(requestUser *model.User) []byte {
     /*
     authBackend := authentication.InitJWTAuthenticationBackend()
@@ -51,6 +56,7 @@ func RefreshToken(requestUser *model.User) []byte {
     return response
     */
     return nil
+    
 }
 
 func Logout(req *http.Request) error {

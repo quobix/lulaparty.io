@@ -99,7 +99,11 @@
 
         xhttp.onreadystatechange = function() {
             if (xhttp.readyState == 4 && xhttp.status == 200) {
-                console.log(xhttp.responseText);
+                console.log(xhttp.responseText)
+                document.getElementById('jwt').innerHTML =
+                        'JWT: ' + xhttp.responseText
+
+
             }
         };
         xhttp.open("POST", "/token-exchange", true);
@@ -122,6 +126,10 @@
 </fb:login-button>
 
 <div id="status">
+</div>
+
+
+<div id="jwt">
 </div>
 
 

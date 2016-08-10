@@ -51,7 +51,7 @@ func CreateNewUserFromTex(ter *model.TokenExchangeRequest, at *model.AccessToken
         TrialExpired:   false,
         FBAuthToken:    ret_at.Id,
     }
-    tracelog.Trace("service", "CreateNewUserFromTex", "Creating actual new user [" + ter.Email + "]")
+    tracelog.Trace("service", "CreateNewUserFromTex", "Creating new user [" + ter.Email + "]")
     ret_u, err := data.CreateUserSimple(u, ac)
     if(err!=nil) {
         return nil, err
